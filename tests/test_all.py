@@ -87,3 +87,15 @@ def test_retrying_wrapper_retries_then_succeeds():
         assert RetryingLLM(Flaky(), retries=3).generate("s", "u") == "ok"
     finally:
         time.sleep = orig
+
+
+def test_initial_regenerates_on_malformed_reply():
+    import run_experiments as R
+    class L:
+        calls = 0; last_tokens = 5
+        def generate(self, s, u, t=0.5):
+            L.calls += 1
+            return "{ truncated" if L.calls < 3 else '{"classes": [], "relationships": []}'
+    cfg = {"prompts": {"standard": {"system": "x"}}, "json_instruction": "y"}
+    m, tok = R.initial(L(), cfg, "standard", "task", 0.5)
+    assert m == {"classes": [], "relationships": []} and tok == 15

@@ -13,17 +13,18 @@ class LLMClient:
 
 class OpenAIClient(LLMClient):
     """Also serves every OpenAI-compatible endpoint (Groq, OpenRouter, Ollama, ...): pass base_url and api_key_env."""
-    def __init__(self, model="gpt-4o-mini", base_url=None, api_key_env="OPENAI_API_KEY"):
+    def __init__(self, model="gpt-4o-mini", base_url=None, api_key_env="OPENAI_API_KEY", extra=None):
         from openai import OpenAI
         key = os.environ.get(api_key_env, "ollama" if base_url and "localhost" in base_url else None)
         if key is None:
             raise KeyError(f"environment variable {api_key_env} is not set")
-        self.c, self.model = OpenAI(api_key=key, base_url=base_url), model
+        self.c, self.model, self.extra = OpenAI(api_key=key, base_url=base_url), model, dict(extra or {})
     def generate(self, system, user, temperature=0.5):
-        r = self.c.chat.completions.create(model=self.model, temperature=temperature,
+        r = self.c.chat.completions.create(model=self.model, temperature=temperature, **self.extra,
                                            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
         self.last_tokens = r.usage.total_tokens
-        return r.choices[0].message.content
+        self.last_reply = r.choices[0].message.content or ""
+        return self.last_reply
 
 
 class AnthropicClient(LLMClient):
@@ -65,6 +66,7 @@ class RetryingLLM(LLMClient):
                 out = self.inner.generate(system, user, temperature)
                 self._t = time.time()
                 self.last_tokens = getattr(self.inner, "last_tokens", 0)
+                self.last_reply = out
                 return out
             except Exception as e:                                   # noqa: BLE001
                 self._t = time.time()

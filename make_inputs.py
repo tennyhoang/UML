@@ -109,11 +109,14 @@ cfg = {
  "prompts": {"standard": {"system": STANDARD}, "rule": {"system": RULE}, "preference": {"system": PREF}},
  "models": {
    "gpt-oss-20b":      {"provider": "openai_compat", "name": "openai/gpt-oss-20b", "base_url": "https://api.groq.com/openai/v1",
-                         "api_key_env": "GROQ_API_KEY", "min_interval": 4},
+                         "api_key_env": "GROQ_API_KEY", "min_interval": 4,
+                         "extra": {"reasoning_effort": "low", "max_completion_tokens": 6000, "response_format": {"type": "json_object"}}},
    "gpt-oss-120b":      {"provider": "openai_compat", "name": "openai/gpt-oss-120b", "base_url": "https://api.groq.com/openai/v1",
-                         "api_key_env": "GROQ_API_KEY", "min_interval": 4},
+                         "api_key_env": "GROQ_API_KEY", "min_interval": 4,
+                         "extra": {"reasoning_effort": "low", "max_completion_tokens": 6000, "response_format": {"type": "json_object"}}},
    "qwen3.8-27b":       {"provider": "openai_compat", "name": "qwen/qwen3.8-27b", "base_url": "https://api.groq.com/openai/v1",
-                         "api_key_env": "GROQ_API_KEY", "min_interval": 4}},
+                         "api_key_env": "GROQ_API_KEY", "min_interval": 4,
+                         "extra": {"max_completion_tokens": 6000, "response_format": {"type": "json_object"}}}},
  "domains": {
    "HMS":    {"packs": [], "dry_seed": "data/hms_flawed_example.json", "prompts": HMS_P, "reference": "data/hms_reference.json"},
    "Sensor": {"packs": ["notification"], "dry_seed": "data/hms_flawed_example.json", "prompts": SEN_P, "reference": "data/sensor_reference.json"}}}

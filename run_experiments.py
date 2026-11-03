@@ -23,7 +23,7 @@ def make_client(m):
     if p == "openai":
         c = OpenAIClient(name)
     elif p == "openai_compat":
-        c = OpenAIClient(name, base_url=m["base_url"], api_key_env=m["api_key_env"])
+        c = OpenAIClient(name, base_url=m["base_url"], api_key_env=m["api_key_env"], extra=m.get("extra"))
     elif p == "anthropic":
         c = AnthropicClient(name)
     elif p == "gemini":
@@ -37,8 +37,15 @@ BASE = {"C0": ("standard", None), "C1": ("rule", None), "C2": ("preference", Non
 
 def initial(llm, cfg, base, task, temperature):
     system = cfg["prompts"][base]["system"] + "\n\n" + cfg["json_instruction"]
-    reply = llm.generate(system, task, temperature)
-    return extract_json(reply), getattr(llm, "last_tokens", 0)
+    tokens = 0
+    for attempt in range(3):                       # a malformed / truncated reply is asked again (counted in tokens)
+        reply = llm.generate(system, task, temperature)
+        tokens += getattr(llm, "last_tokens", 0)
+        try:
+            return extract_json(reply), tokens
+        except ValueError as e:
+            err = e
+    raise ValueError(f"{err} | reply starts: {reply[:200]!r}")
 
 
 def main():
