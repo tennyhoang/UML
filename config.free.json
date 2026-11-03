@@ -1,7 +1,7 @@
 {
  "temperature": 0.5,
  "k_max": 3,
- "runs": 10,
+ "runs": 3,
  "conditions": [
   "C0",
   "C1",

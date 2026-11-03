@@ -103,7 +103,7 @@ PREF = (RULE + "\n\nBelow are five annotated examples. In each one a WORSE desig
         "".join(f"\nExample {i}\nTask: {t}\nWORSE: {w}\nPREFERRED: {g}\n" for i, (t, w, g) in enumerate(PAIRS, 1)))
 
 cfg = {
- "temperature": 0.5, "k_max": 3, "runs": 10,
+ "temperature": 0.5, "k_max": 3, "runs": 3,
  "conditions": ["C0", "C1", "C2", "C3", "C4", "C5"],
  "json_instruction": json.load(open("config.example.json"))["json_instruction"],
  "prompts": {"standard": {"system": STANDARD}, "rule": {"system": RULE}, "preference": {"system": PREF}},
