@@ -35,9 +35,9 @@
    "api_key_env": "GROQ_API_KEY",
    "min_interval": 4
   },
-  "llama-3.1-8b": {
+  "qwen3.8-27b": {
    "provider": "openai_compat",
-   "name": "llama-3.1-8b-instant",
+   "name": "qwen/qwen3.8-27b",
    "base_url": "https://api.groq.com/openai/v1",
    "api_key_env": "GROQ_API_KEY",
    "min_interval": 4

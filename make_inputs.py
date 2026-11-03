@@ -111,7 +111,7 @@ cfg = {
    "gemini-3.6-flash":  {"provider": "gemini", "name": "gemini-3.6-flash", "min_interval": 7},
    "gpt-oss-120b":      {"provider": "openai_compat", "name": "openai/gpt-oss-120b", "base_url": "https://api.groq.com/openai/v1",
                          "api_key_env": "GROQ_API_KEY", "min_interval": 4},
-   "llama-3.1-8b":      {"provider": "openai_compat", "name": "llama-3.1-8b-instant", "base_url": "https://api.groq.com/openai/v1",
+   "qwen3.8-27b":       {"provider": "openai_compat", "name": "qwen/qwen3.8-27b", "base_url": "https://api.groq.com/openai/v1",
                          "api_key_env": "GROQ_API_KEY", "min_interval": 4}},
  "domains": {
    "HMS":    {"packs": [], "dry_seed": "data/hms_flawed_example.json", "prompts": HMS_P, "reference": "data/hms_reference.json"},

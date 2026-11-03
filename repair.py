@@ -12,6 +12,7 @@ SYSTEM_REPAIR = (
 
 def extract_json(text):
     """Parse the first top-level JSON object in an LLM reply (handles ``` fences)."""
+    text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)          # reasoning models may print their thoughts
     text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.M).strip()
     start = text.find("{")
     if start < 0:
