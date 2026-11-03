@@ -28,9 +28,9 @@
    "name": "gemini-3.6-flash",
    "min_interval": 7
   },
-  "llama-3.3-70b": {
+  "gpt-oss-120b": {
    "provider": "openai_compat",
-   "name": "llama-3.3-70b-versatile",
+   "name": "openai/gpt-oss-120b",
    "base_url": "https://api.groq.com/openai/v1",
    "api_key_env": "GROQ_API_KEY",
    "min_interval": 4
