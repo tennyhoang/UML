@@ -108,7 +108,7 @@ cfg = {
  "json_instruction": json.load(open("config.example.json"))["json_instruction"],
  "prompts": {"standard": {"system": STANDARD}, "rule": {"system": RULE}, "preference": {"system": PREF}},
  "models": {
-   "gemini-2.5-flash":  {"provider": "gemini", "name": "gemini-2.5-flash", "min_interval": 7},
+   "gemini-3.6-flash":  {"provider": "gemini", "name": "gemini-3.6-flash", "min_interval": 7},
    "llama-3.3-70b":     {"provider": "openai_compat", "name": "llama-3.3-70b-versatile", "base_url": "https://api.groq.com/openai/v1",
                          "api_key_env": "GROQ_API_KEY", "min_interval": 4},
    "llama-3.1-8b":      {"provider": "openai_compat", "name": "llama-3.1-8b-instant", "base_url": "https://api.groq.com/openai/v1",

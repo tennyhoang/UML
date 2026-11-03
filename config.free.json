@@ -23,9 +23,9 @@
   }
  },
  "models": {
-  "gemini-2.5-flash": {
+  "gemini-3.6-flash": {
    "provider": "gemini",
-   "name": "gemini-2.5-flash",
+   "name": "gemini-3.6-flash",
    "min_interval": 7
   },
   "llama-3.3-70b": {
