@@ -70,3 +70,20 @@ def test_metrics():
 
 def test_extract_json_fenced():
     assert extract_json('text\n```json\n{"a": {"b": 1}}\n```') == {"a": {"b": 1}}
+
+
+def test_retrying_wrapper_retries_then_succeeds():
+    from llm import RetryingLLM, LLMClient
+    class Flaky(LLMClient):
+        n = 0
+        def generate(self, system, user, temperature=0.5):
+            Flaky.n += 1
+            if Flaky.n < 2:
+                raise RuntimeError("429")
+            return "ok"
+    import time
+    orig, time.sleep = time.sleep, lambda s: None
+    try:
+        assert RetryingLLM(Flaky(), retries=3).generate("s", "u") == "ok"
+    finally:
+        time.sleep = orig

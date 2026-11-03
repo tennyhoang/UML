@@ -1,0 +1,1 @@
+Model the billing of a hospital as a class diagram. Patients are either inpatients or outpatients. The cost of a bill is worked out differently depending on whether the patient is covered by an insurer, pays personally or is covered by a government scheme, and the hospital expects that other payment methods will be added over time.

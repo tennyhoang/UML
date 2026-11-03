@@ -1,0 +1,1 @@
+Model an event-driven weather sensor network as a class diagram. The network has pressure sensors, temperature sensors, rain gauges and wind sensors. A weather station receives their data and has to tell the weather information system whenever the data change. The frequency of reporting can be hourly or user-defined, and the operator may want new reporting policies later.

@@ -12,9 +12,13 @@ class LLMClient:
 
 
 class OpenAIClient(LLMClient):
-    def __init__(self, model="gpt-4o-mini"):
+    """Also serves every OpenAI-compatible endpoint (Groq, OpenRouter, Ollama, ...): pass base_url and api_key_env."""
+    def __init__(self, model="gpt-4o-mini", base_url=None, api_key_env="OPENAI_API_KEY"):
         from openai import OpenAI
-        self.c, self.model = OpenAI(api_key=os.environ["OPENAI_API_KEY"]), model
+        key = os.environ.get(api_key_env, "ollama" if base_url and "localhost" in base_url else None)
+        if key is None:
+            raise KeyError(f"environment variable {api_key_env} is not set")
+        self.c, self.model = OpenAI(api_key=key, base_url=base_url), model
     def generate(self, system, user, temperature=0.5):
         r = self.c.chat.completions.create(model=self.model, temperature=temperature,
                                            messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
@@ -43,6 +47,30 @@ class GeminiClient(LLMClient):
                                            config=types.GenerateContentConfig(system_instruction=system, temperature=temperature))
         self.last_tokens = getattr(r.usage_metadata, "total_token_count", 0)
         return r.text
+
+
+class RetryingLLM(LLMClient):
+    """Wraps a client: waits `min_interval` seconds between calls (free-tier rate limits) and retries transient
+    errors (429 / 5xx / timeouts) with exponential back-off. A daily quota error is raised after `retries` tries."""
+    def __init__(self, inner, min_interval=0.0, retries=6):
+        self.inner, self.min_interval, self.retries, self._t = inner, min_interval, retries, 0.0
+        self.last_tokens = 0
+    def generate(self, system, user, temperature=0.5):
+        import time
+        for attempt in range(self.retries + 1):
+            wait = self.min_interval - (time.time() - self._t)
+            if wait > 0:
+                time.sleep(wait)
+            try:
+                out = self.inner.generate(system, user, temperature)
+                self._t = time.time()
+                self.last_tokens = getattr(self.inner, "last_tokens", 0)
+                return out
+            except Exception as e:                                   # noqa: BLE001
+                self._t = time.time()
+                if attempt == self.retries:
+                    raise
+                time.sleep(min(60, 2 ** (attempt + 1)))
 
 
 class MockLLM(LLMClient):

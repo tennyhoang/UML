@@ -12,12 +12,25 @@ keys are skipped.  Conditions:
   C5 psr      = C2 + LLM self-refine, no checker     (ablation: loop without external validation)
 """
 import argparse, json, os, sys
-from llm import MockLLM, OpenAIClient, AnthropicClient, GeminiClient
+from llm import MockLLM, OpenAIClient, AnthropicClient, GeminiClient, RetryingLLM
 from repair import extract_json, run_repair, run_self_refine
 from validator import validate, score, check_notification_structure
 
 PACKS = {"notification": check_notification_structure}
-FACTORY = {"openai": OpenAIClient, "anthropic": AnthropicClient, "gemini": GeminiClient}
+def make_client(m):
+    """provider: openai | anthropic | gemini | openai_compat (Groq, OpenRouter, Ollama: give base_url + api_key_env)"""
+    p, name = m["provider"], m["name"]
+    if p == "openai":
+        c = OpenAIClient(name)
+    elif p == "openai_compat":
+        c = OpenAIClient(name, base_url=m["base_url"], api_key_env=m["api_key_env"])
+    elif p == "anthropic":
+        c = AnthropicClient(name)
+    elif p == "gemini":
+        c = GeminiClient(name)
+    else:
+        raise ValueError(f"unknown provider {p}")
+    return RetryingLLM(c, min_interval=m.get("min_interval", 0.0), retries=m.get("retries", 6))
 BASE = {"C0": ("standard", None), "C1": ("rule", None), "C2": ("preference", None),
         "C3": ("preference", "pvr"), "C4": ("standard", "sv"), "C5": ("preference", "psr")}
 
@@ -37,12 +50,16 @@ def main():
     done, cache = set(), {}          # cache: initial diagram per (domain,prompt,model,base,run) -> paired design
     if os.path.exists(a.out):
         for line in open(a.out):
-            d = json.loads(line); done.add((d["domain"], d["prompt"], d["model"], d["condition"], d["run"]))
+            d = json.loads(line)
+            if d.get("error"):
+                continue                      # failed (e.g. quota) -> retried on the next run
+            done.add((d["domain"], d["prompt"], d["model"], d["condition"], d["run"]))
             if d["trace"]:
                 cache[(d["domain"], d["prompt"], d["model"], BASE[d["condition"]][0], d["run"])] = (d["trace"]["models"][0], 0)
     temp, k_max = cfg.get("temperature", 0.5), cfg.get("k_max", 3)
-    clients = {n: (MockLLM(skill=0.8, seed=i) if a.dry_run else FACTORY[m["provider"]](m["name"]))
+    clients = {n: (MockLLM(skill=0.8, seed=i) if a.dry_run else make_client(m))
                for i, (n, m) in enumerate(cfg["models"].items())}
+    fails = 0
     with open(a.out, "a") as out:
         for dom, D in cfg["domains"].items():
             packs = [PACKS[p] for p in D.get("packs", [])]
@@ -76,6 +93,10 @@ def main():
                                 rec = {"domain": dom, "prompt": pid, "model": mname, "condition": cond, "run": run,
                                        "dry_run": a.dry_run, "trace": None, "error": repr(e)}
                             out.write(json.dumps(rec) + "\n"); out.flush()
+                            fails = fails + 1 if rec["error"] else 0
+                            if fails >= 5:
+                                sys.exit("5 consecutive failures (quota or key problem?). Progress is saved; "
+                                         "fix the cause and run the same command again to resume.\nLast error: " + rec["error"])
 
 
 if __name__ == "__main__":

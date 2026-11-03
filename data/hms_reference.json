@@ -1,0 +1,224 @@
+{
+ "classes": [
+  {
+   "name": "Patient",
+   "attributes": [
+    {
+     "name": "id",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "address",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "getBillableDays",
+     "visibility": "+"
+    }
+   ],
+   "abstract": true
+  },
+  {
+   "name": "InPatient",
+   "attributes": [
+    {
+     "name": "ward",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "admissionDate",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "getDailyRate",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "OutPatient",
+   "attributes": [
+    {
+     "name": "clinic",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "visitDate",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "getVisitFee",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "Bill",
+   "attributes": [
+    {
+     "name": "billId",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "amount",
+     "type": "double",
+     "visibility": "-"
+    },
+    {
+     "name": "date",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "getAmount",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "BillingStrategy",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "calculate",
+     "visibility": "+"
+    }
+   ],
+   "interface": true
+  },
+  {
+   "name": "InsuranceBilling",
+   "attributes": [
+    {
+     "name": "insurerName",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "calculate",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "SelfPayBilling",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "calculate",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "GovernmentBilling",
+   "attributes": [
+    {
+     "name": "schemeCode",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "calculate",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "BillingProcessor",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "processBill",
+     "visibility": "+"
+    },
+    {
+     "name": "setStrategy",
+     "visibility": "+"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "type": "inheritance",
+   "source": "InPatient",
+   "target": "Patient"
+  },
+  {
+   "type": "inheritance",
+   "source": "OutPatient",
+   "target": "Patient"
+  },
+  {
+   "type": "realization",
+   "source": "InsuranceBilling",
+   "target": "BillingStrategy"
+  },
+  {
+   "type": "realization",
+   "source": "SelfPayBilling",
+   "target": "BillingStrategy"
+  },
+  {
+   "type": "realization",
+   "source": "GovernmentBilling",
+   "target": "BillingStrategy"
+  },
+  {
+   "type": "aggregation",
+   "source": "BillingProcessor",
+   "target": "BillingStrategy",
+   "multiplicity_source": "1",
+   "multiplicity_target": "1"
+  },
+  {
+   "type": "association",
+   "source": "BillingProcessor",
+   "target": "Patient",
+   "multiplicity_source": "1",
+   "multiplicity_target": "*",
+   "label": "bills"
+  },
+  {
+   "type": "association",
+   "source": "BillingProcessor",
+   "target": "Bill",
+   "multiplicity_source": "1",
+   "multiplicity_target": "*",
+   "label": "produces"
+  },
+  {
+   "type": "association",
+   "source": "Patient",
+   "target": "Bill",
+   "multiplicity_source": "1",
+   "multiplicity_target": "*",
+   "label": "receives"
+  }
+ ]
+}

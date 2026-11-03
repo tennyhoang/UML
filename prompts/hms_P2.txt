@@ -1,0 +1,1 @@
+Design a UML class diagram for hospital billing. The hospital treats admitted patients (who stay in a ward) and outpatients (who attend a clinic for a visit). A bill is paid through insurance, directly by the patient, or by a government programme; the amount is computed in a different way for each. New ways of paying may be introduced in the future.
