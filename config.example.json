@@ -1,0 +1,23 @@
+{
+  "temperature": 0.5, "k_max": 3, "runs": 10,
+  "conditions": ["C0", "C1", "C2", "C3", "C4", "C5"],
+  "json_instruction": "Return the class diagram as ONE JSON object: {\"classes\":[{\"name\":..,\"abstract\":bool,\"interface\":bool,\"attributes\":[{\"name\":..,\"type\":..,\"visibility\":\"-|+|#|~\"}],\"operations\":[{\"name\":..,\"visibility\":..}]}],\"relationships\":[{\"type\":\"inheritance|realization|association|aggregation|composition|dependency\",\"source\":..,\"target\":..,\"multiplicity_source\":..,\"multiplicity_target\":..,\"label\":..}]}. Inheritance and realization go from child to parent. JSON only.",
+  "prompts": {
+    "standard":   {"system": "PASTE the standard baseline prompt here"},
+    "rule":       {"system": "PASTE the rule-injected prompt here (Priming + Question + Decorator)"},
+    "preference": {"system": "PASTE the preference-based few-shot prompt here (5 good/bad pairs)"}
+  },
+  "models": {
+    "gpt-4o-mini": {"provider": "openai", "name": "gpt-4o-mini"},
+    "claude":      {"provider": "anthropic", "name": "REPLACE_WITH_CLAUDE_MODEL_ID"},
+    "gemini-2.5-flash": {"provider": "gemini", "name": "gemini-2.5-flash"}
+  },
+  "domains": {
+    "HMS":    {"packs": [], "dry_seed": "data/hms_flawed_example.json",
+               "prompts": {"P1": "PASTE HMS paraphrase 1", "P2": "PASTE HMS paraphrase 2", "P3": "PASTE HMS paraphrase 3"},
+               "reference": "data/hms_reference_example.json"},
+    "Sensor": {"packs": ["notification"], "dry_seed": "data/hms_flawed_example.json",
+               "prompts": {"P1": "PASTE Sensor paraphrase 1", "P2": "PASTE Sensor paraphrase 2", "P3": "PASTE Sensor paraphrase 3"},
+               "reference": "data/sensor_reference.json"}
+  }
+}
