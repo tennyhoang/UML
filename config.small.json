@@ -1,0 +1,64 @@
+{
+ "temperature": 0.5,
+ "k_max": 3,
+ "runs": 3,
+ "conditions": [
+  "C0",
+  "C2",
+  "C3",
+  "C4"
+ ],
+ "json_instruction": "Return the class diagram as ONE JSON object: {\"classes\":[{\"name\":..,\"abstract\":bool,\"interface\":bool,\"attributes\":[{\"name\":..,\"type\":..,\"visibility\":\"-|+|#|~\"}],\"operations\":[{\"name\":..,\"visibility\":..}]}],\"relationships\":[{\"type\":\"inheritance|realization|association|aggregation|composition|dependency\",\"source\":..,\"target\":..,\"multiplicity_source\":..,\"multiplicity_target\":..,\"label\":..}]}. Inheritance and realization go from child to parent. JSON only.",
+ "prompts": {
+  "standard": {
+   "system": "You are a software designer. Produce a UML class diagram for the following task."
+  },
+  "rule": {
+   "system": "You are an experienced object-oriented software architect.\nDesign principles you must apply: (1) Abstraction: when several classes share attributes or behaviour, extract a common abstract superclass or interface. (2) Encapsulation: attributes are private; expose behaviour through operations. (3) Open/closed and separation of concerns: when a behaviour varies, put each variant in its own class behind a common interface instead of using conditionals, and let a client class refer to that interface. (4) When one object must keep other objects informed about its changes, decouple them through interfaces instead of direct calls.\nBefore answering, check that every class is connected, every association has multiplicities, there are no duplicate or cyclic inheritance links, and every interface is used by some class. Then give the final diagram."
+  },
+  "preference": {
+   "system": "You are an experienced object-oriented software architect.\nDesign principles you must apply: (1) Abstraction: when several classes share attributes or behaviour, extract a common abstract superclass or interface. (2) Encapsulation: attributes are private; expose behaviour through operations. (3) Open/closed and separation of concerns: when a behaviour varies, put each variant in its own class behind a common interface instead of using conditionals, and let a client class refer to that interface. (4) When one object must keep other objects informed about its changes, decouple them through interfaces instead of direct calls.\nBefore answering, check that every class is connected, every association has multiplicities, there are no duplicate or cyclic inheritance links, and every interface is used by some class. Then give the final diagram.\n\nBelow are five annotated examples. In each one a WORSE design and a PREFERRED design are shown for a task; always aim for the structure of the preferred design.\n\nExample 1\nTask: An online shop sells physical and downloadable products and supports card, wallet and bank-transfer payment.\nWORSE: Product(name, price, type, fileSize, weight) with public attributes; Order has a method pay(method) using if/else for card, wallet, bank-transfer.\nPREFERRED: abstract Product with PhysicalProduct and DigitalProduct; private attributes; interface PaymentMethod realized by CardPayment, WalletPayment, BankTransferPayment; Checkout aggregates PaymentMethod (1..1).\n\nExample 2\nTask: A library lends books, DVDs and magazines to members, and late fees depend on the item type.\nWORSE: Separate unrelated classes Book, DVD, Magazine, each repeating title, id and dueDate; Member has a method with if/else on the item type to compute the fee.\nPREFERRED: abstract LibraryItem(title, id, dueDate) specialised by Book, DVD, Magazine; interface FeePolicy with concrete policies; Loan aggregates FeePolicy; Member 1..* Loan.\n\nExample 3\nTask: A ride-hailing app has cars, bikes and scooters, and the fare is computed by distance, by time or by a flat rate.\nWORSE: Vehicle(type, plate) with a type string; Trip.fare() contains a switch on the pricing kind; attributes public.\nPREFERRED: abstract Vehicle specialised by Car, Bike, Scooter; interface FarePolicy with DistanceFare, TimeFare, FlatFare; Trip refers to FarePolicy; Trip 0..* to Vehicle 1.\n\nExample 4\nTask: A newsroom publishes breaking news; web, email and mobile channels must all be told when a story is published.\nWORSE: Newsroom holds fields webSite, emailList, mobileApp and calls each directly in publish(); any new channel needs a change in Newsroom.\nPREFERRED: interface Subscriber(notify) realized by WebChannel, EmailChannel, MobileChannel; Newsroom keeps Subscriber 0..* and notifies them; Story belongs to Newsroom.\n\nExample 5\nTask: A restaurant serves dine-in, takeaway and delivery orders, and discounts are student, loyalty or seasonal.\nWORSE: Order class with a type field and a discount() method of nested if statements; no relation between order kinds.\nPREFERRED: abstract Order specialised by DineInOrder, TakeawayOrder, DeliveryOrder; interface DiscountRule realized by StudentDiscount, LoyaltyDiscount, SeasonalDiscount; Order uses DiscountRule (0..1).\n"
+  }
+ },
+ "models": {
+  "gpt-oss-120b": {
+   "provider": "openai_compat",
+   "name": "openai/gpt-oss-120b",
+   "base_url": "https://api.groq.com/openai/v1",
+   "api_key_env": "GROQ_API_KEY",
+   "min_interval": 4,
+   "extra": {
+    "reasoning_effort": "low",
+    "max_completion_tokens": 6000,
+    "response_format": {
+     "type": "json_object"
+    }
+   }
+  },
+  "qwen3.8-27b": {
+   "provider": "openai_compat",
+   "name": "qwen/qwen3.8-27b",
+   "base_url": "https://api.groq.com/openai/v1",
+   "api_key_env": "GROQ_API_KEY",
+   "min_interval": 4,
+   "extra": {
+    "max_completion_tokens": 6000,
+    "response_format": {
+     "type": "json_object"
+    }
+   }
+  }
+ },
+ "domains": {
+  "HMS": {
+   "packs": [],
+   "dry_seed": "data/hms_flawed_example.json",
+   "prompts": {
+    "P1": "A hospital management system must bill patients. Some patients are admitted to a ward and some visit as outpatients. Charges depend on how the bill is paid: private insurance, out-of-pocket payment by the patient, or a government health scheme, and each of them calculates the amount differently. The hospital may add further payment arrangements later. Design the class diagram for the billing part of this system.",
+    "P2": "Design a UML class diagram for hospital billing. The hospital treats admitted patients (who stay in a ward) and outpatients (who attend a clinic for a visit). A bill is paid through insurance, directly by the patient, or by a government programme; the amount is computed in a different way for each. New ways of paying may be introduced in the future.",
+    "P3": "Model the billing of a hospital as a class diagram. Patients are either inpatients or outpatients. The cost of a bill is worked out differently depending on whether the patient is covered by an insurer, pays personally or is covered by a government scheme, and the hospital expects that other payment methods will be added over time."
+   },
+   "reference": "data/hms_reference.json"
+  }
+ }
+}

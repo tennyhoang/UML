@@ -129,4 +129,10 @@ if __name__ == "__main__":
     for d, P in (("hms", HMS_P), ("sensor", SEN_P)):
         for k, v in P.items(): open(f"prompts/{d}_{k}.txt", "w").write(v)
     json.dump(cfg, open("config.free.json", "w"), indent=1, ensure_ascii=False)
-    print("written: config.free.json, data/*_reference.json, prompts/*.txt")
+    # Reduced pilot: HMS only, two models, conditions C0, C2, C3, C4 (no C1 rule baseline, no C5 self-refine control)
+    small = json.loads(json.dumps(cfg))
+    small["conditions"] = ["C0", "C2", "C3", "C4"]
+    small["models"] = {k: v for k, v in cfg["models"].items() if k in ("gpt-oss-120b", "qwen3.8-27b")}
+    small["domains"] = {"HMS": cfg["domains"]["HMS"]}
+    json.dump(small, open("config.small.json", "w"), indent=1, ensure_ascii=False)
+    print("written: config.free.json, config.small.json, data/*_reference.json, prompts/*.txt")
