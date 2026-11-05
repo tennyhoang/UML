@@ -48,3 +48,10 @@ The models used here are not the base study's models; report the exact model nam
 * Evidence of quality = F1 against the expert reference + the **manual** ternary rubric (PAS, PES), scored by raters
   who do not know the condition (blind the files by shuffling and stripping the condition).
 * Log the exact model versions, dates and the random seeds / API parameters you used.
+
+## Pilot results (5 Nov 2026)
+`results/pilot_hms_2026-11-05.jsonl` is the raw output of the reduced pilot (HMS, gpt-oss-120b and qwen3.8-27b via Groq,
+conditions C0/C2/C3/C4, 3 runs per cell), and `results/pilot_hms_2026-11-05_analysis.txt` the output of `analyze.py`.
+Two rows (qwen3.8-27b C2/C3, P2, run 0) hold a malformed model and were excluded in the paper (69 diagrams analysed).
+In all analysed diagrams the validator found no violation, so the repair loop never ran. The `tokens` field of paired
+conditions counts the shared initial generation twice and should not be used.

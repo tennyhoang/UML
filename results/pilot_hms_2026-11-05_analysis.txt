@@ -1,0 +1,17 @@
+domain  model  cond | n  F1  initVC  finalVC  conv  iters  regress  SI(F1)  agree
+HMS gpt-oss-120b C0 | 9 0.365 0.00 0.00 1.00 0.00 0.00 0.996 0.332
+HMS gpt-oss-120b C2 | 8 0.336 0.00 0.00 1.00 0.00 0.00 0.997 0.392
+HMS gpt-oss-120b C3 | 9 0.339 0.00 0.00 1.00 0.00 0.00 0.997 0.397
+HMS gpt-oss-120b C4 | 9 0.365 0.00 0.00 1.00 0.00 0.00 0.996 0.332
+HMS qwen3.8-27b C0 | 9 0.344 0.00 0.00 1.00 0.00 0.00 0.995 0.317
+HMS qwen3.8-27b C2 | 9 0.357 0.00 0.00 1.00 0.00 0.00 0.980 0.234
+HMS qwen3.8-27b C3 | 9 0.357 0.00 0.00 1.00 0.00 0.00 0.980 0.234
+HMS qwen3.8-27b C4 | 9 0.344 0.00 0.00 1.00 0.00 0.00 0.995 0.317
+/usr/local/lib/python3.13/dist-packages/scipy/stats/_wilcoxon.py:192: RuntimeWarning: invalid value encountered in scalar divide
+  z = (r_plus - mn) / se
+
+F1: second vs first condition (paired Wilcoxon, Holm-adjusted p, Cliff's delta)
+HMS gpt-oss-120b C2->C3: delta=+0.00 p_holm=1.0000
+HMS gpt-oss-120b C0->C4: delta=+0.00 p_holm=1.0000
+HMS qwen3.8-27b C2->C3: delta=+0.00 p_holm=1.0000
+HMS qwen3.8-27b C0->C4: delta=+0.00 p_holm=1.0000
