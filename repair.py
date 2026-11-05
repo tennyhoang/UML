@@ -10,6 +10,22 @@ SYSTEM_REPAIR = (
     "that are correct; do not add commentary. Output JSON only.")
 
 
+def check_schema(m):
+    """Raise ValueError unless m looks like {"classes":[{name,..}], "relationships":[{type,source,target,..}]}."""
+    if not isinstance(m, dict) or not isinstance(m.get("classes"), list) or not isinstance(m.get("relationships"), list):
+        raise ValueError("model must have 'classes' and 'relationships' lists")
+    for c in m["classes"]:
+        if not isinstance(c, dict) or "name" not in c:
+            raise ValueError("every class must be an object with a name")
+        for key in ("attributes", "operations"):
+            if any(not isinstance(x, dict) for x in c.get(key, [])):
+                raise ValueError(f"{key} must be a list of objects")
+    for r in m["relationships"]:
+        if not isinstance(r, dict) or not {"type", "source", "target"} <= set(r):
+            raise ValueError("every relationship needs type, source, target")
+    return m
+
+
 def extract_json(text):
     """Parse the first top-level JSON object in an LLM reply (handles ``` fences)."""
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)          # reasoning models may print their thoughts
@@ -22,7 +38,7 @@ def extract_json(text):
         depth += ch == "{"
         depth -= ch == "}"
         if depth == 0:
-            return json.loads(text[start:i + 1])
+            return check_schema(json.loads(text[start:i + 1]))
     raise ValueError("unterminated JSON")
 
 
