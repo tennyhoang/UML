@@ -69,7 +69,16 @@ def test_metrics():
 
 
 def test_extract_json_fenced():
-    assert extract_json('text\n```json\n{"a": {"b": 1}}\n```') == {"a": {"b": 1}}
+    m = {"classes": [{"name": "A"}], "relationships": []}
+    assert extract_json('text\n```json\n' + __import__("json").dumps(m) + '\n```') == m
+
+
+def test_extract_json_rejects_bad_schema_and_think_blocks():
+    import pytest
+    with pytest.raises(ValueError):
+        extract_json('{"classes": [{"name": "A"}], "relationships": [{"source": "A"}]}')   # relationship lacks type/target
+    ok = '<think>{x}</think>{"classes": [], "relationships": []}'
+    assert extract_json(ok) == {"classes": [], "relationships": []}
 
 
 def test_retrying_wrapper_retries_then_succeeds():
