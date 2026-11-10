@@ -1,0 +1,147 @@
+{
+  "classes": [
+    {
+      "name": "Subject",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "observers",
+          "type": "List<Observer>",
+          "visibility": "+"
+        }
+      ],
+      "operations": [
+        {
+          "name": "attach",
+          "visibility": "+"
+        },
+        {
+          "name": "detach",
+          "visibility": "+"
+        },
+        {
+          "name": "notify",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "Observer",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "update",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "WeatherStation",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "stationId",
+          "type": "String",
+          "visibility": "+"
+        },
+        {
+          "name": "data",
+          "type": "String",
+          "visibility": "+"
+        }
+      ],
+      "operations": [
+        {
+          "name": "collectData",
+          "visibility": "+"
+        },
+        {
+          "name": "notify",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "WeatherInformationSystem",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "systemId",
+          "type": "String",
+          "visibility": "+"
+        }
+      ],
+      "operations": [
+        {
+          "name": "update",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "Sensor",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "sensorId",
+          "type": "String",
+          "visibility": "+"
+        }
+      ],
+      "operations": [
+        {
+          "name": "readValue",
+          "visibility": "+"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "association",
+      "source": "WeatherStation",
+      "target": "Observer",
+      "multiplicity_source": "1",
+      "multiplicity_target": "*",
+      "label": "notifies"
+    },
+    {
+      "type": "inheritance",
+      "source": "WeatherStation",
+      "target": "Subject",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "WeatherStation",
+      "target": "Subject",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "WeatherInformationSystem",
+      "target": "Observer",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "association",
+      "source": "WeatherStation",
+      "target": "Sensor",
+      "multiplicity_source": "1",
+      "multiplicity_target": "1",
+      "label": ""
+    }
+  ]
+}

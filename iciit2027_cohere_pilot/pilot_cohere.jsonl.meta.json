@@ -1,0 +1,61 @@
+[
+ {
+  "utc": "2026-11-05T20:24:46+00:00",
+  "argv": [
+   "--config",
+   "config_pilot.json",
+   "--out",
+   "pilot_cohere.jsonl"
+  ],
+  "python": "3.12.10",
+  "config_sha256": "8ab791a02c570c3411164f6582513eaca269c817bebc8d242b35dce210a49a40",
+  "temperature": 0.5,
+  "k_max": 3,
+  "runs": 2,
+  "conditions": [
+   "C0",
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6"
+  ],
+  "models": {
+   "cohere": {
+    "provider": "cohere",
+    "name": "command-a-03-2025"
+   }
+  }
+ },
+ {
+  "utc": "2026-11-06T02:49:57+00:00",
+  "argv": [
+   "--config",
+   "config_pilot.json",
+   "--out",
+   "pilot_cohere.jsonl",
+   "--retry-errors"
+  ],
+  "python": "3.12.10",
+  "config_sha256": "8ab791a02c570c3411164f6582513eaca269c817bebc8d242b35dce210a49a40",
+  "temperature": 0.5,
+  "k_max": 3,
+  "runs": 2,
+  "conditions": [
+   "C0",
+   "C1",
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6"
+  ],
+  "models": {
+   "cohere": {
+    "provider": "cohere",
+    "name": "command-a-03-2025"
+   }
+  }
+ }
+]

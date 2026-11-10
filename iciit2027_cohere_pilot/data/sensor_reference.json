@@ -1,0 +1,374 @@
+{
+  "classes": [
+    {
+      "name": "Subject",
+      "abstract": true,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "attach",
+          "visibility": "+",
+          "parameters": "o: Observer"
+        },
+        {
+          "name": "detach",
+          "visibility": "+",
+          "parameters": "o: Observer"
+        },
+        {
+          "name": "notify",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "Observer",
+      "abstract": true,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "update",
+          "visibility": "+",
+          "abstract": true
+        }
+      ]
+    },
+    {
+      "name": "WeatherStation",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "stationId",
+          "type": "String",
+          "visibility": "-"
+        },
+        {
+          "name": "location",
+          "type": "String",
+          "visibility": "-"
+        },
+        {
+          "name": "maxAirTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "minAirTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "avgAirTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "maxGroundTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "minGroundTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "avgGroundTemp",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "maxPressure",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "minPressure",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "avgPressure",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "maxWindSpeed",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "minWindSpeed",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "avgWindSpeed",
+          "type": "float",
+          "visibility": "-"
+        },
+        {
+          "name": "totalRainfall",
+          "type": "float",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "collectData",
+          "visibility": "+",
+          "parameters": "s: Sensor"
+        },
+        {
+          "name": "SetState",
+          "visibility": "+"
+        },
+        {
+          "name": "GetState",
+          "visibility": "+"
+        },
+        {
+          "name": "notify",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "ReportingContext",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "reportingInterval",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "WeatherInformationSystem",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "systemId",
+          "type": "String",
+          "visibility": "-"
+        },
+        {
+          "name": "weatherState",
+          "type": "List<float>",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "requestData",
+          "visibility": "+"
+        },
+        {
+          "name": "update",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "ReportingStrategy",
+      "abstract": true,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "report",
+          "visibility": "+",
+          "abstract": true
+        }
+      ]
+    },
+    {
+      "name": "HourlyReporting",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "report",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "CustomIntervalReporting",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "interval",
+          "type": "int",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "report",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "Sensor",
+      "abstract": true,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "sensorId",
+          "type": "String",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "readValue",
+          "visibility": "+"
+        }
+      ]
+    },
+    {
+      "name": "TemperatureSensor",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": []
+    },
+    {
+      "name": "PressureSensor",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": []
+    },
+    {
+      "name": "WindSensor",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": []
+    },
+    {
+      "name": "RainGauge",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": []
+    }
+  ],
+  "relationships": [
+    {
+      "type": "association",
+      "source": "Subject",
+      "target": "Observer",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": "observers"
+    },
+    {
+      "type": "inheritance",
+      "source": "WeatherStation",
+      "target": "Subject",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "WeatherInformationSystem",
+      "target": "Observer",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "association",
+      "source": "WeatherInformationSystem",
+      "target": "WeatherStation",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": "subject"
+    },
+    {
+      "type": "inheritance",
+      "source": "HourlyReporting",
+      "target": "ReportingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "CustomIntervalReporting",
+      "target": "ReportingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "association",
+      "source": "WeatherStation",
+      "target": "ReportingContext",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "aggregation",
+      "source": "ReportingContext",
+      "target": "ReportingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": "reportingStrategy"
+    },
+    {
+      "type": "inheritance",
+      "source": "TemperatureSensor",
+      "target": "Sensor",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "PressureSensor",
+      "target": "Sensor",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "WindSensor",
+      "target": "Sensor",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "RainGauge",
+      "target": "Sensor",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "association",
+      "source": "WeatherStation",
+      "target": "Sensor",
+      "multiplicity_source": "1",
+      "multiplicity_target": "*",
+      "label": "collects from"
+    }
+  ]
+}

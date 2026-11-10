@@ -1,0 +1,26 @@
+[
+ {
+  "utc": "2026-11-06T03:13:47+00:00",
+  "argv": [
+   "--config",
+   "config_pilot_strict.json",
+   "--out",
+   "pilot_cohere_strict.jsonl"
+  ],
+  "python": "3.12.10",
+  "config_sha256": "31be1d18b3e317b8e2c1a15c2082521e560411a404948cfb232172d82da346ca",
+  "temperature": 0.5,
+  "k_max": 3,
+  "runs": 2,
+  "conditions": [
+   "C3",
+   "C4"
+  ],
+  "models": {
+   "cohere": {
+    "provider": "cohere",
+    "name": "command-a-03-2025"
+   }
+  }
+ }
+]

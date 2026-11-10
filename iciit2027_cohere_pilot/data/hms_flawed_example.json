@@ -1,0 +1,13 @@
+{"classes": [
+ {"name": "Patient", "abstract": true, "attributes": [{"name": "id", "type": "int", "visibility": "+"}, {"name": "name", "type": "string", "visibility": "-"}], "operations": [{"name": "getBill", "visibility": "+"}]},
+ {"name": "InPatient", "attributes": [{"name": "ward", "type": "string", "visibility": "-"}], "operations": []},
+ {"name": "OutPatient", "attributes": [{"name": "clinic", "type": "string", "visibility": "-"}], "operations": []},
+ {"name": "BillingStrategy", "interface": true, "attributes": [], "operations": [{"name": "calculate", "visibility": "+"}]},
+ {"name": "InsuranceBilling", "attributes": [], "operations": [{"name": "calculate", "visibility": "+"}]},
+ {"name": "SelfPayBilling", "attributes": [], "operations": [{"name": "calculate", "visibility": "+"}]}],
+ "relationships": [
+ {"type": "inheritance", "source": "InPatient", "target": "Patient"},
+ {"type": "inheritance", "source": "InPatient", "target": "Patient"},
+ {"type": "inheritance", "source": "OutPatient", "target": "Patient"},
+ {"type": "realization", "source": "InsuranceBilling", "target": "BillingStrategy"},
+ {"type": "realization", "source": "SelfPayBilling", "target": "BillingStrategy"}]}

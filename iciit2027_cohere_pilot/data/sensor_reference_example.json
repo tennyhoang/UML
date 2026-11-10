@@ -1,0 +1,220 @@
+{
+ "_note": "ILLUSTRATIVE example built from Table I of arXiv:2604.00851. NOT the benchmark reference model; use only for tests/demos.",
+ "classes": [
+  {
+   "name": "Sensor",
+   "abstract": true,
+   "attributes": [
+    {
+     "name": "id",
+     "type": "string",
+     "visibility": "-"
+    },
+    {
+     "name": "location",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "read",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "PressureSensor",
+   "attributes": [],
+   "operations": []
+  },
+  {
+   "name": "TemperatureSensor",
+   "attributes": [],
+   "operations": []
+  },
+  {
+   "name": "RainGauge",
+   "attributes": [],
+   "operations": []
+  },
+  {
+   "name": "WindSensor",
+   "attributes": [],
+   "operations": []
+  },
+  {
+   "name": "Subject",
+   "interface": true,
+   "attributes": [],
+   "operations": [
+    {
+     "name": "attach",
+     "visibility": "+"
+    },
+    {
+     "name": "detach",
+     "visibility": "+"
+    },
+    {
+     "name": "notifyObservers",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "Observer",
+   "interface": true,
+   "attributes": [],
+   "operations": [
+    {
+     "name": "update",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "WeatherStation",
+   "attributes": [
+    {
+     "name": "stationId",
+     "type": "string",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "collect",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "WeatherInformationSystem",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "update",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "ReportingStrategy",
+   "interface": true,
+   "attributes": [],
+   "operations": [
+    {
+     "name": "report",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "ReportingContext",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "generateReport",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "HourlyReporting",
+   "attributes": [],
+   "operations": [
+    {
+     "name": "report",
+     "visibility": "+"
+    }
+   ]
+  },
+  {
+   "name": "CustomIntervalReporting",
+   "attributes": [
+    {
+     "name": "intervalMinutes",
+     "type": "int",
+     "visibility": "-"
+    }
+   ],
+   "operations": [
+    {
+     "name": "report",
+     "visibility": "+"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "type": "inheritance",
+   "source": "PressureSensor",
+   "target": "Sensor"
+  },
+  {
+   "type": "inheritance",
+   "source": "TemperatureSensor",
+   "target": "Sensor"
+  },
+  {
+   "type": "inheritance",
+   "source": "RainGauge",
+   "target": "Sensor"
+  },
+  {
+   "type": "inheritance",
+   "source": "WindSensor",
+   "target": "Sensor"
+  },
+  {
+   "type": "realization",
+   "source": "WeatherStation",
+   "target": "Subject"
+  },
+  {
+   "type": "realization",
+   "source": "WeatherInformationSystem",
+   "target": "Observer"
+  },
+  {
+   "type": "association",
+   "source": "Subject",
+   "target": "Observer",
+   "multiplicity_source": "1",
+   "multiplicity_target": "0..*"
+  },
+  {
+   "type": "aggregation",
+   "source": "WeatherStation",
+   "target": "Sensor",
+   "multiplicity_source": "1",
+   "multiplicity_target": "1..*"
+  },
+  {
+   "type": "realization",
+   "source": "HourlyReporting",
+   "target": "ReportingStrategy"
+  },
+  {
+   "type": "realization",
+   "source": "CustomIntervalReporting",
+   "target": "ReportingStrategy"
+  },
+  {
+   "type": "aggregation",
+   "source": "ReportingContext",
+   "target": "ReportingStrategy",
+   "multiplicity_source": "1",
+   "multiplicity_target": "1"
+  },
+  {
+   "type": "association",
+   "source": "WeatherStation",
+   "target": "ReportingContext",
+   "multiplicity_source": "1",
+   "multiplicity_target": "1"
+  }
+ ]
+}

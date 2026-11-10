@@ -1,0 +1,215 @@
+{
+  "classes": [
+    {
+      "name": "Patient",
+      "abstract": true,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "-"
+        },
+        {
+          "name": "totalCost",
+          "type": "double",
+          "visibility": "-"
+        },
+        {
+          "name": "insuranceCoverage",
+          "type": "double",
+          "visibility": "-"
+        },
+        {
+          "name": "deductible",
+          "type": "double",
+          "visibility": "-"
+        },
+        {
+          "name": "programType",
+          "type": "String",
+          "visibility": "-"
+        },
+        {
+          "name": "corporateCode",
+          "type": "String",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "Billing",
+          "visibility": "+",
+          "abstract": true,
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "InPatient",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "Billing",
+          "visibility": "+",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "OutPatient",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "Billing",
+          "visibility": "+",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "BillingStrategy",
+      "abstract": true,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "calculateBill",
+          "visibility": "+",
+          "abstract": true,
+          "parameters": "patient : Patient",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "InsuranceBilling",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "calculateBill",
+          "visibility": "+",
+          "parameters": "patient : Patient",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "SelfPayBilling",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "calculateBill",
+          "visibility": "+",
+          "parameters": "patient : Patient",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "GovernmentBilling",
+      "abstract": false,
+      "interface": false,
+      "attributes": [],
+      "operations": [
+        {
+          "name": "calculateBill",
+          "visibility": "+",
+          "parameters": "patient : Patient",
+          "return_type": "double"
+        }
+      ]
+    },
+    {
+      "name": "BillingProcessor",
+      "abstract": false,
+      "interface": false,
+      "attributes": [
+        {
+          "name": "strategy",
+          "type": "BillingStrategy",
+          "visibility": "-"
+        }
+      ],
+      "operations": [
+        {
+          "name": "BillingProcessor",
+          "visibility": "+",
+          "parameters": "strategy : BillingStrategy"
+        },
+        {
+          "name": "generateBill",
+          "visibility": "+",
+          "parameters": "patient : Patient",
+          "return_type": "double"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "inheritance",
+      "source": "InPatient",
+      "target": "Patient",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "OutPatient",
+      "target": "Patient",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "InsuranceBilling",
+      "target": "BillingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "SelfPayBilling",
+      "target": "BillingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "inheritance",
+      "source": "GovernmentBilling",
+      "target": "BillingStrategy",
+      "multiplicity_source": "",
+      "multiplicity_target": "",
+      "label": ""
+    },
+    {
+      "type": "aggregation",
+      "source": "BillingProcessor",
+      "target": "BillingStrategy",
+      "multiplicity_source": "1",
+      "multiplicity_target": "1",
+      "label": "billingStrategy"
+    },
+    {
+      "type": "association",
+      "source": "Patient",
+      "target": "BillingProcessor",
+      "multiplicity_source": "0..*",
+      "multiplicity_target": "1",
+      "label": ""
+    }
+  ]
+}

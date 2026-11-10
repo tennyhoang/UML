@@ -55,3 +55,7 @@ conditions C0/C2/C3/C4, 3 runs per cell), and `results/pilot_hms_2026-11-05_anal
 Two rows (qwen3.8-27b C2/C3, P2, run 0) hold a malformed model and were excluded in the paper (69 diagrams analysed).
 In all analysed diagrams the validator found no violation, so the repair loop never ran. The `tokens` field of paired
 conditions counts the shared initial generation twice and should not be used.
+
+## Code and data of the ICIIT 2027 paper
+
+The code, configurations and raw results behind the paper *Improving the Reliability of LLM-Generated UML Class Diagrams Through Automated Validation and Iterative Refinement* (Cohere Command A pilot, conditions C0-C6, 84 + 24 records) are in [`iciit2027_cohere_pilot/`](iciit2027_cohere_pilot/). See its `README.md` and `PROTOCOL_NOTES.md`. The files in the repository root are a separate, earlier harness (Groq free-tier pilot).
